@@ -10,9 +10,10 @@ permissions:
   contents: read
 
 jobs:
-  # One job per template: run its full `make check` so every template on main
-  # stays green — the human app extracts templates straight from this branch.
-  web-go:
+  # Jobs per template: tests in their own job for at-a-glance failures, the
+  # remaining checks and build together. Every template on main must stay
+  # green — the human app extracts templates straight from this branch.
+  web-go-test:
     runs-on: ubuntu-24.04
     defaults:
       run:
@@ -22,5 +23,19 @@ jobs:
       - uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
         with:
           go-version-file: web/go/go.mod
-      - run: make check
+      - run: make test
+
+  web-go-checks:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: web/go
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
+        with:
+          go-version-file: web/go/go.mod
+      - run: make lint
+      - run: make sec
+      - run: make secrets
       - run: make build
