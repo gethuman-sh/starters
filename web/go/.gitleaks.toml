@@ -1,0 +1,8 @@
+# gitleaks config: keep the default detection rules, allowlist test fixtures.
+[extend]
+useDefault = true
+
+[allowlist]
+paths = [
+  '''_test\.go$''',
+]
