@@ -23,6 +23,7 @@ jobs:
       - uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
         with:
           go-version-file: web/go/go.mod
+          cache-dependency-path: web/go/go.sum
       - run: make test
 
   web-go-checks:
@@ -35,6 +36,7 @@ jobs:
       - uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
         with:
           go-version-file: web/go/go.mod
+          cache-dependency-path: web/go/go.sum
       - run: make lint
       - run: make sec
       - run: make secrets
